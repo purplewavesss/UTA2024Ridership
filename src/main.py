@@ -54,7 +54,7 @@ def get_station_ridership(year: int, station: str, data: pd.DataFrame) -> int:
             case "SUN":
                 ridership += (row[1]["avgboardings"] * get_day_of_week_in_month(year, int(row[1]["month_"]), 6))
 
-    return int(ridership)
+    return int(ridership / days_in_year(year))
 
 def get_weekdays_in_month(year: int, month: int) -> int:
     cal: calendar.Calendar = calendar.Calendar()
@@ -77,6 +77,15 @@ def get_day_of_week_in_month(year: int, month: int, day: int) -> int:
             days += 1
 
     return days
+
+def days_in_year(year: int) -> int:
+    if year % 400 is 0:
+        return 366
+    elif year % 100 is 0:
+        return 365
+    elif year % 4 is 0:
+        return 366
+    return 365
 
 if __name__ == "__main__":
     main()
