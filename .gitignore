@@ -1,7 +1,2 @@
 /.idea/*
-/src/ridership.txt
-/src/ridership_daily_average.txt
-/src/ridership_daily.txt
-/src/ridership_frontrunner_daily.txt
-/src/ridership_frontrunner_yearly.txt
-/src/ridership_yearly.txt
+/src/*.txt
