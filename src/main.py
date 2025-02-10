@@ -79,11 +79,11 @@ def get_day_of_week_in_month(year: int, month: int, day: int) -> int:
     return days
 
 def days_in_year(year: int) -> int:
-    if year % 400 is 0:
+    if year % 400 == 0:
         return 366
-    elif year % 100 is 0:
+    elif year % 100 == 0:
         return 365
-    elif year % 4 is 0:
+    elif year % 4 == 0:
         return 366
     return 365
 
