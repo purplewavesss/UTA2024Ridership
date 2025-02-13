@@ -8,7 +8,7 @@ def main():
     ridership_data.mask(ridership_data["year_"] != int(cmd_args[2]), inplace=True)
     ridership_data.dropna(inplace=True)
     station_ridership: dict[str, int] = calculate_data(cmd_args, ridership_data)
-    write_to_file(station_ridership)
+    write_to_file(station_ridership, int(cmd_args[2]))
 
 def calculate_data(cmd_args: list[str], data: pd.DataFrame) -> dict[str, int]:
     station_ridership: dict[str, int] = {}
@@ -27,8 +27,8 @@ def calculate_data(cmd_args: list[str], data: pd.DataFrame) -> dict[str, int]:
 
     return station_ridership
 
-def write_to_file(ridership: dict[str, int]):
-    file = open("ridership.txt", "w")
+def write_to_file(ridership: dict[str, int], year: int):
+    file = open(f"ridership_{year}.txt", "w")
     for station, ridership_num in ridership.items():
         file.write(f"{station}: {ridership_num}\n")
     file.close()
