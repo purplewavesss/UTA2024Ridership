@@ -37,7 +37,8 @@ def get_data_items(data: pd.DataFrame):
     items: set[str] = set()
     for row in data.itertuples():
         stop_name: str = row.stopname
-        stop_name = re.sub("\\s+\\([A-Za-z]B\\)", "", stop_name)
+        stop_name = re.sub("\\s+\\([A-Za-z]B.*\\)", "", stop_name)
+        stop_name = re.sub("\\s+\\(Bay [A-Za-z]\\)", "", stop_name)
         items.add(stop_name)
 
     return items

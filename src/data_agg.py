@@ -13,8 +13,7 @@ def write_to_file(data: dict[str, int], filename: str, item_name: str):
 
 
 def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str, division_period: int) -> int:
-    item_data: pd.DataFrame = data.mask(data[item_row] != item)
-    item_data = item_data.dropna()
+    item_data = data[data[item_row].str.contains(item, regex=False)]
     ridership: float = 0
 
     for row in item_data.itertuples():
@@ -23,10 +22,11 @@ def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str, divis
         if isinstance(month, str):
             month = month_to_int(month)
 
-        # Convert boardings
-        boardings: str = row.avgboardings
-        boardings = re.sub(",", "", boardings)
-        boardings: float = float(boardings)
+        # Convert boardings if needed
+        boardings: float | str = row.avgboardings
+        if isinstance(boardings, str):
+            boardings = re.sub(",", "", boardings)
+            boardings: float = float(boardings)
 
         match row.servicetype:
             case "WKD":
