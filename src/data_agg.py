@@ -4,14 +4,15 @@ import re
 import pandas as pd
 
 
-def write_to_file(data: dict[str, int], filename: str):
+def write_to_file(data: dict[str, int], filename: str, item_name: str):
     file = open(filename, "w")
+    file.write(f"{item_name},Ridership\n")
     for item, ridership_num in data.items():
-        file.write(f"{item}: {ridership_num}\n")
+        file.write(f"{item},{ridership_num}\n")
     file.close()
 
 
-def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str) -> int:
+def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str, division_period: int) -> int:
     item_data: pd.DataFrame = data.mask(data[item_row] != item)
     item_data = item_data.dropna()
     ridership: float = 0
@@ -35,7 +36,7 @@ def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str) -> in
             case "SUN":
                 ridership += (boardings * get_day_of_week_in_month(year, month, 6))
 
-    return int(ridership / days_in_year(year))
+    return int(ridership / division_period)
 
 
 def get_data_items(data: pd.DataFrame, item_row: str) -> set[str]:
@@ -44,6 +45,20 @@ def get_data_items(data: pd.DataFrame, item_row: str) -> set[str]:
         items.add(row.__getattribute__(item_row))
 
     return items
+
+
+def get_days_in_month(year: int, month: int) -> int:
+    match month:
+        case 1 | 3 | 5 | 7 | 8 | 10 | 12:
+            return 31
+        case 2:
+            if get_days_in_year(year) != 365:
+                return 29
+            return 28
+        case 4 | 6 | 9 | 11:
+            return 30
+
+    raise ValueError("Integer must correspond to month!")
 
 
 def get_weekdays_in_month(year: int, month: int) -> int:
@@ -70,7 +85,7 @@ def get_day_of_week_in_month(year: int, month: int, day: int) -> int:
     return days
 
 
-def days_in_year(year: int) -> int:
+def get_days_in_year(year: int) -> int:
     if year % 400 == 0:
         return 366
     elif year % 100 == 0:

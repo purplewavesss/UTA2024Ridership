@@ -1,2 +1,4 @@
 /.idea/*
 /src/*.txt
+/src/*.csv
+/src/*.csv#

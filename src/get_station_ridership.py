@@ -11,10 +11,11 @@ def main():
     ridership_data.mask(ridership_data["year_"] != int(cmd_args[2]), inplace=True)
     ridership_data.dropna(inplace=True)
     station_ridership: dict[str, int] = calculate_data(cmd_args, ridership_data)
-    agg.write_to_file(station_ridership, f"rail_station_ridership_{int(cmd_args[2])}.txt")
+    agg.write_to_file(station_ridership, f"rail_station_ridership_{int(cmd_args[2])}.csv", "station")
 
 def calculate_data(cmd_args: list[str], data: pd.DataFrame) -> dict[str, int]:
     station_ridership: dict[str, int] = {}
+    year: int = int(cmd_args[2])
 
     # Mask data if not explicitly requested
     if not cmd_args.__contains__("--include-frontrunner"):
@@ -26,7 +27,7 @@ def calculate_data(cmd_args: list[str], data: pd.DataFrame) -> dict[str, int]:
     stations: set[str] = agg.get_data_items(data, "stopname")
 
     for station in stations:
-        station_ridership.update({station: agg.get_ridership(int(cmd_args[2]), station, data, "stopname")})
+        station_ridership.update({station: agg.get_ridership(year, station, data, "stopname", agg.get_days_in_year(year))})
 
     return station_ridership
 
