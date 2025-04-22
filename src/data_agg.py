@@ -1,4 +1,6 @@
 import calendar
+import re
+
 import pandas as pd
 
 
@@ -20,13 +22,18 @@ def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str) -> in
         if isinstance(month, str):
             month = month_to_int(month)
 
+        # Convert boardings
+        boardings: str = row.avgboardings
+        boardings = re.sub(",", "", boardings)
+        boardings: float = float(boardings)
+
         match row.servicetype:
             case "WKD":
-                ridership += (float(row.avgboardings) * get_weekdays_in_month(year, month))
+                ridership += (boardings * get_weekdays_in_month(year, month))
             case "SAT":
-                ridership += (float(row.avgboardings) * get_day_of_week_in_month(year, month, 5))
+                ridership += (boardings * get_day_of_week_in_month(year, month, 5))
             case "SUN":
-                ridership += (float(row.avgboardings) * get_day_of_week_in_month(year, month, 6))
+                ridership += (boardings * get_day_of_week_in_month(year, month, 6))
 
     return int(ridership / days_in_year(year))
 
