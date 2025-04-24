@@ -27,7 +27,7 @@ def calculate_data(cmd_args: list[str], data: pd.DataFrame) -> dict[str, int]:
     stations: set[str] = agg.get_data_items(data, "stopname")
 
     for station in stations:
-        station_ridership.update({station: agg.get_ridership(year, station, data, "stopname", agg.get_days_in_year(year))})
+        station_ridership.update({station: agg.get_ridership(year, station, data, "stopname", agg.get_days_in_year(year), False)})
 
     return station_ridership
 

@@ -28,7 +28,7 @@ def calculate_data(cmd_args: list[str], data: pd.DataFrame) -> dict[str, int]:
     routes: set[str] = agg.get_data_items(data, "lineabbr")
 
     for route in routes:
-        route_ridership.update({route: agg.get_ridership(year, route, data, "lineabbr", agg.get_days_in_year(year))})
+        route_ridership.update({route: agg.get_ridership(year, route, data, "lineabbr", 1, False)})
 
     return route_ridership
 

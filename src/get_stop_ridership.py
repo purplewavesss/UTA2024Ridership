@@ -28,7 +28,7 @@ def calculate_data(cmd_args: list[str], data: pd.DataFrame) -> dict[str, int]:
     stops: set[str] = get_data_items(data)
 
     for stop in stops:
-        stop_ridership.update({stop: agg.get_ridership(month, stop, data, "stopname", agg.get_days_in_month(year, month))})
+        stop_ridership.update({stop: agg.get_ridership(month, stop, data, "stopname", agg.get_days_in_month(year, month), True)})
 
     return stop_ridership
 

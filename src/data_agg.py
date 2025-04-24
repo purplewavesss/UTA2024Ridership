@@ -1,6 +1,5 @@
 import calendar
 import re
-
 import pandas as pd
 
 
@@ -12,15 +11,22 @@ def write_to_file(data: dict[str, int], filename: str, item_name: str):
     file.close()
 
 
-def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str, division_period: int) -> int:
-    item_data = data[data[item_row].str.contains(item, regex=False)]
+def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str, division_period: int, use_regex: bool) -> int:
     ridership: float = 0
+
+    if use_regex:
+        item_data = data[data[item_row].str.contains(item, regex=False)]
+    else:
+        item_data: pd.DataFrame = data.mask(data[item_row] != item)
+        item_data = item_data.dropna()
 
     for row in item_data.itertuples():
         # Convert month if needed
-        month: int | str = row.month_
+        month: int | str | float = row.month_
         if isinstance(month, str):
             month = month_to_int(month)
+        elif isinstance(month, float):
+            month = int(month)
 
         # Convert boardings if needed
         boardings: float | str = row.avgboardings
