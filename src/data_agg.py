@@ -101,36 +101,6 @@ def get_days_in_year(year: int) -> int:
     return 365
 
 
-def int_to_month(month: int) -> str:
-    match month:
-        case 1:
-            return "January"
-        case 2:
-            return "February"
-        case 3:
-            return "March"
-        case 4:
-            return "April"
-        case 5:
-            return "May"
-        case 6:
-            return "June"
-        case 7:
-            return "July"
-        case 8:
-            return "August"
-        case 9:
-            return "September"
-        case 10:
-            return "October"
-        case 11:
-            return "November"
-        case 12:
-            return "December"
-
-    raise ValueError("Integer must correspond to month!")
-
-
 def month_to_int(month: str) -> int:
     match month:
         case "January":
