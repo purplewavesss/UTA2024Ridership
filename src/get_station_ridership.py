@@ -22,12 +22,13 @@ def calculate_data(cmd_args: list[str], data: pd.DataFrame) -> dict[str, int]:
         data.mask(data["route"] == "FrontRunner", inplace=True)
     if not cmd_args.__contains__("--include-s-line"):
         data.mask(data["route"] == "S-Line", inplace=True)
+    data = data.mask(data["month_"] != "January")
     data.dropna(inplace=True)
 
     stations: set[str] = agg.get_data_items(data, "stopname")
 
     for station in stations:
-        station_ridership.update({station: agg.get_ridership(year, station, data, "stopname", agg.get_days_in_year(year), False)})
+        station_ridership.update({station: agg.get_ridership(year, station, data, "stopname", 31, False)})
 
     return station_ridership
 

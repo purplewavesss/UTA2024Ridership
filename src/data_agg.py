@@ -11,10 +11,10 @@ def write_to_file(data: dict[str, int], filename: str, item_name: str):
     file.close()
 
 
-def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str, division_period: int, use_regex: bool) -> int:
+def get_ridership(year: int, item: str, data: pd.DataFrame, item_row: str, division_period: int, match_partial_string: bool) -> int:
     ridership: float = 0
 
-    if use_regex:
+    if match_partial_string:
         item_data = data[data[item_row].str.contains(item, regex=False)]
     else:
         item_data: pd.DataFrame = data.mask(data[item_row] != item)
